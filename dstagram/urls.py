@@ -16,6 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from photo import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+
+
+    # template 디버깅용임 건들지마셈
+    url(r'^debug/login', views.debug_login, name='login'),
+    url(r'^debug/main', views.debug_main, name='main'),
+    url(r'^debug/signup', views.debug_signup, name='signup'),
 ]

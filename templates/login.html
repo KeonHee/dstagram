@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% load staticfiles%}
+
+{% block content %}
+
+{% if form.errors %}
+<p>ID나 비밀번호가 일치하지 않습니다.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>권한이 없는 페이지에 접근하였으니, 권한이 있는 계정으로 로그인하세요.</p>
+    {% else %}
+    <p>이 페이지를 보려면 로그인을 해야 합니다.</p>
+    {% endif %}
+{% endif %}
+<style>
+    /* label color */
+   .input-field label {
+     color: #424242 ;
+   }
+   /* label focus color */
+   .input-field input[type=text]:focus + label {
+     color: #d81b60;
+   }
+   /* label underline focus color */
+   .input-field input[type=text]:focus {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* label focus color */
+   .input-field input[type=password]:focus + label {
+     color: #d81b60;
+   }
+   /* label underline focus color */
+   .input-field input[type=password]:focus {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* label focus color */
+   .input-field input[type=email]:focus + label {
+     color: #d81b60;
+   }
+   /* label underline focus color */
+   .input-field input[type=email]:focus {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* valid color */
+   .input-field input[type=text].valid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* invalid color */
+   .input-field input[type=text].invalid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* valid color */
+   .input-field input[type=password].valid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* invalid color */
+   .input-field input[type=password].invalid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* valid color */
+   .input-field input[type=email].valid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* invalid color */
+   .input-field input[type=email].invalid {
+     border-bottom: 1px solid #d81b60;
+     box-shadow: 0 1px 0 0 #d81b60;
+   }
+   /* icon prefix focus color */
+   .input-field .prefix.active {
+     color: #d81b60;
+   }
+    #signup .row{
+        margin: 1rem;
+    }
+</style>
+<form method="post" action="{% url 'main' %}">
+{% csrf_token %}
+<div class="row">
+    <div class="col s12"><h1></h1></div><div class="col s12"><h1></h1></div>
+    <div class="container col s4 offset-s4" id="login">
+        <div class="card-panel white small">
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input type="text" id="username" name="username" class="validate">
+                    <label for="username">Username</label>
+                </div>
+                <div class="input-field col s12 ">
+                    <i class="material-icons prefix">lock_outline</i>
+                    <input type="password" id="password" name="password" class="validate">
+                    <label for="password">Password</label>
+                </div>
+                <div class="input-field col s12 center-align">
+                    <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                        <b>로그인</b><i class="material-icons right">send</i>
+                    </button>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<form method="post" action="{% url 'signup' %}">
+{% csrf_token %}
+    <div class="row">
+        <div class="container col s4 offset-s4" id="signup">
+            <ul class="collapsible white" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">library_add</i><b>회원 가입</b>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input type="text" id="username" name="username" class="validate">
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="input-field col s12 ">
+                                <i class="material-icons prefix">lock_outline</i>
+                                <input type="password" id="password" name="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input type="email" id="email" name="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field col s12 center-align">
+                                <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                                <b>가입완료</b><i class="material-icons right">input</i>
+                                </button>
+                                <input type="hidden" name="next" value="{{ next }}" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>
+{% endblock %}
