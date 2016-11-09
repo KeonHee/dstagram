@@ -10,29 +10,110 @@
     <p>이 페이지를 보려면 로그인을 해야 합니다.</p>
     {% endif %}
 {% endif %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/input.css' %}" />
     <style>
     .card-image img{
-        max-height: 100%;
+        max-height: 500%;
+        max-width: 100%;
         padding: 0.01rem;
     }
+    #card-name{
+        margin-bottom: 0px;
+    }
     </style>
-    <div class="col s12"><h1></h1></div><div class="col s12"><h1></h1></div>
+    <div class="col s12 m4 offset-m4"><h1></h1></div>
+
+
+    <div class="row">
+        <div class="col s12 m4 offset-m4">
+             <ul class="collapsible popout" data-collapsible="accordion">
+                 <li>
+                     <div class="collapsible-header"><i class="material-icons">person_pin</i>내 프로필</div>
+                     <div class="collapsible-body white"><p>Lorem ipsum dolor sit amet.</p></div>
+                 </li>
+                 <li>
+                    <div class="collapsible-header"><i class="material-icons">note_add</i>사진 올리기</div>
+                    <div class="collapsible-body white">
+                        <form method="post" action="{% url 'insert' %}"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="row">
+                                <div class="file-field input-field col s12">
+                                    <div class="btn pink darken-1">
+                                        <span>Image</span>
+                                        <input type="file" id="uploadImage">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="col s8 offset-s2" id="holder"></div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">assignment</i>
+                                    <input type="text" id="title" name="title" class="validate">
+                                    <label for="title">Title</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">mode_edit</i>
+                                    <textarea id="contents" class="materialize-textarea" length="120"></textarea>
+                                    <label for="contents">Contents</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                 </li>
+            </ul>
+        </div>
+    </div>
+
+    {# 사진 리스트 #}
     {% for photo in photo_list %}
     <div class="row">
-        <div class="col s12 m6 offset-m3">
+        <div class="col s12 m4 offset-m4">
           <div class="card">
+            <div class="card-content">
+                <div class="row" id="card-name">
+                    <div class="col s12 m6 l8">
+                        <p>김건희</p>
+                    </div>
+                    <div class="col s12 m6 l4">
+                        <p class="grey-text text-lighten-1">{{ date }}</p>
+                    </div>
+                </div>
+            </div>
             <div class="card-image">
-              <img src="{% static "image/chopstick1.jpg" %}">
-              <span class="card-title">{{ photo.title }}</span>
+                <img src="{% static "image/chopstick1.jpg" %}">
+                <span class="card-title">{{ photo.title }}</span>
             </div>
             <div class="card-content">
-              <p>{{ photo.contents }}</p>
+                <p>{{ photo.contents }}</p>
             </div>
             <div class="card-action">
-              <a href="#">This is a link</a>
+                <a href="#">수정하기</a>
             </div>
           </div>
         </div>
       </div>
     {% endfor %}
+    <script>
+    // 이미지 업로드시 화면에 바로 띄워줌
+var upload = document.getElementById('uploadImage'),
+	holder = document.getElementById("holder");
+    upload.onchange = function (e) {
+	  e.preventDefault();
+	  var file = upload.files[0],
+	      reader = new FileReader();
+	    reader.onload = function (event) {
+	    var img = new Image();
+	    img.src = event.target.result;
+	    if (img.width > 300) { // holder max width
+	      img.width = 300;
+	    }
+	    holder.innerHTML = '';
+	    holder.appendChild(img);
+	  };
+	  reader.readAsDataURL(file);
+
+	  return false;
+	};
+</script>
 {% endblock %}
