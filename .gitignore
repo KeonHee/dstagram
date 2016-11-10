@@ -3,4 +3,4 @@ db.sqlite3
 
 __pycache__
 /photo/migrations
-/uploaded_files
+/uploaded_image
