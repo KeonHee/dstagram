@@ -26,5 +26,7 @@ urlpatterns = [
     url(r'^debug/login', views.debug_login, name='login'),
     url(r'^debug/main', views.debug_main, name='main'),
     url(r'^debug/signup', views.debug_signup, name='signup'),
-    url(r'^debug/main', views.debug_insert, name='insert'),
+    url(r'^debug/insert', views.debug_insert, name='insert'),
+    url(r'^debug/update-page', views.debug_update_page, name='update-page'),
+    url(r'^debug/update', views.debug_update, name='update'),
 ]

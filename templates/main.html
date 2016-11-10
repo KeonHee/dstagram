@@ -35,7 +35,7 @@
                     <div class="collapsible-header"><i class="material-icons">note_add</i>사진 올리기</div>
                     <div class="collapsible-body white">
                         <form method="post" action="{% url 'insert' %}"  enctype="multipart/form-data">
-                        {% csrf_token %}
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="file-field input-field col s12">
                                     <div class="btn pink darken-1">
@@ -57,6 +57,12 @@
                                     <textarea id="contents" class="materialize-textarea" length="120"></textarea>
                                     <label for="contents">Contents</label>
                                 </div>
+                                <div class="input-field col s12 center-align">
+                                    <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                                        <b>업로드</b><i class="material-icons right">send</i>
+                                    </button>
+                                    <input type="hidden" name="next" value="{{ next }}" />
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -69,33 +75,41 @@
     {% for photo in photo_list %}
     <div class="row">
         <div class="col s12 m4 offset-m4">
-          <div class="card">
-            <div class="card-content">
-                <div class="row" id="card-name">
-                    <div class="col s12 m6 l8">
-                        <p>김건희</p>
-                    </div>
-                    <div class="col s12 m6 l4">
-                        <p class="grey-text text-lighten-1">{{ date }}</p>
+            <div class="card">
+                <div class="card-content">
+                    <div class="row" id="card-name">
+                        <div class="col s12 m6 l8">
+                            <p>김건희</p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p class="grey-text text-lighten-1">{{ date }}</p>
+                        </div>
                     </div>
                 </div>
+                <div class="card-image">
+                    <img src="{% static "image/chopstick1.jpg" %}">
+                    <span class="card-title">{{ photo.title }} - {{ photo.id }}</span>
+                </div>
+                <div class="card-content">
+                    <p>{{ photo.contents }}</p>
+                </div>
+                <div class="card-action">
+                    <form method="post" action="{% url 'update-page' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ photo.id }}" />
+                        <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                            <b>수정하기</b><i class="material-icons right">send</i>
+                        </button>
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                    </form>
+                </div>
             </div>
-            <div class="card-image">
-                <img src="{% static "image/chopstick1.jpg" %}">
-                <span class="card-title">{{ photo.title }}</span>
-            </div>
-            <div class="card-content">
-                <p>{{ photo.contents }}</p>
-            </div>
-            <div class="card-action">
-                <a href="#">수정하기</a>
-            </div>
-          </div>
         </div>
       </div>
     {% endfor %}
-    <script>
-    // 이미지 업로드시 화면에 바로 띄워줌
+
+<script>
+// 이미지 업로드시 화면에 바로 띄워줌
 var upload = document.getElementById('uploadImage'),
 	holder = document.getElementById("holder");
     upload.onchange = function (e) {
@@ -116,4 +130,5 @@ var upload = document.getElementById('uploadImage'),
 	  return false;
 	};
 </script>
+
 {% endblock %}
