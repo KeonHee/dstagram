@@ -7,6 +7,12 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 
 
+def main(request):
+    pass
+
+
+def insert(request):
+    pass
 
 
 # template 디버깅용임 건들지마셈

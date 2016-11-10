@@ -20,7 +20,10 @@ from photo import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-
+    # main, photo list
+    url(r'^main', views.main, name='_main'),
+    # insert, photo add
+    url(r'^insert', views.insert, name='_insert'),
 
     # template 디버깅용임 건들지마셈
     url(r'^debug/login', views.debug_login, name='login'),
