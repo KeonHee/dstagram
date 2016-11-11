@@ -10,7 +10,7 @@ def image_file_path(instance, filename):
 # 사진
 class Photo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE, help_text='회원')
-    image_file = models.ImageField(upload_to='/uploaded_image', null=True, blank=True, help_text='사진')
+    image_file = models.ImageField(upload_to='./uploaded_image', null=True, blank=True, help_text='사진')
     title = models.TextField(max_length=100, null=True, blank=True, help_text='제목')
     contents = models.TextField(max_length=500, null=True, blank=True, help_text='내용')
     created_at = models.DateTimeField(auto_now_add=True)

@@ -34,7 +34,7 @@
                  <li>
                     <div class="collapsible-header"><i class="material-icons">note_add</i>사진 올리기</div>
                     <div class="collapsible-body white">
-                        <form method="post" action="{% url 'insert' %}"  enctype="multipart/form-data">
+                        <form method="post" action="{% url '_insert' %}"  enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="file-field input-field col s12">
@@ -79,10 +79,10 @@
                 <div class="card-content">
                     <div class="row" id="card-name">
                         <div class="col s12 m6 l8">
-                            <p>김건희</p>
+                            <p>{{ photo.user.username }}</p>
                         </div>
                         <div class="col s12 m6 l4">
-                            <p class="grey-text text-lighten-1">{{ date }}</p>
+                            <p class="grey-text text-lighten-1">{{ photo.created_at }}</p>
                         </div>
                     </div>
                 </div>
