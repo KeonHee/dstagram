@@ -15,21 +15,40 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth import views as login_views
 
 from photo import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    # main, photo list
-    url(r'^main', views.main, name='_main'),
-    # insert, photo add
-    url(r'^insert', views.insert, name='_insert'),
+    url(
+        r'^accounts/login/',
+        login_views.login,
+        name='login',
+        kwargs={
+            'template_name': 'login.html',
+        }
+    ),
+    url(
+        r'^accounts/logout/',
+        login_views.logout,
+        name='logout'
+    ),
+    url(r'^photos/', views.photo_list, name='photos'),
+    url(r'^photos/(?P<photo_id>\d+)/$', views.photo_detail, name='photo_detail'),
 
     # template 디버깅용임 건들지마셈
-    url(r'^debug/login', views.debug_login, name='login'),
+    #url(r'^debug/login', views.debug_login, name='login'),
     url(r'^debug/main', views.debug_main, name='main'),
     url(r'^debug/signup', views.debug_signup, name='signup'),
     url(r'^debug/insert', views.debug_insert, name='insert'),
     url(r'^debug/update-page', views.debug_update_page, name='update-page'),
     url(r'^debug/update', views.debug_update, name='update'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

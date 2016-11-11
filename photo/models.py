@@ -20,6 +20,9 @@ class Photo(models.Model):
         # 사진 게시글의 정렬 순서 결정(id 역순으로, 최근 추가된 순서대로)
         ordering = ('-pk', '-created_at')
 
+    def delete(self, *args, **kwargs):
+        self.image_file.delete()
+        super(Photo, self).delete(*args, **kwargs)
+
     def __str__(self):
-        # 사진 게시글의 정보 출력(id)
         return 'photo_' + str(self.id)

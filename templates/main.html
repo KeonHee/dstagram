@@ -34,13 +34,13 @@
                  <li>
                     <div class="collapsible-header"><i class="material-icons">note_add</i>사진 올리기</div>
                     <div class="collapsible-body white">
-                        <form method="post" action="{% url '_insert' %}"  enctype="multipart/form-data">
+                        <form method="post" action="{% url 'photos' %}"  enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="file-field input-field col s12">
                                     <div class="btn pink darken-1">
                                         <span>Image</span>
-                                        <input type="file" id="uploadImage">
+                                        <input type="file" id="uploadImage" name="file">
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">mode_edit</i>
-                                    <textarea id="contents" class="materialize-textarea" length="120"></textarea>
+                                    <textarea id="contents" name="contents" class="materialize-textarea" length="120"></textarea>
                                     <label for="contents">Contents</label>
                                 </div>
                                 <div class="input-field col s12 center-align">
@@ -72,7 +72,7 @@
     </div>
 
     {# 사진 리스트 #}
-    {% for photo in photo_list %}
+    {% for photo in photos %}
     <div class="row">
         <div class="col s12 m4 offset-m4">
             <div class="card">
@@ -87,7 +87,11 @@
                     </div>
                 </div>
                 <div class="card-image">
-                    <img src="{% static "image/chopstick1.jpg" %}">
+                    {% if photo.image_file.url%}
+                        <img src="{{ photo.image_file.url }}">
+                    {% else %}
+                        <img src="/uploads/uploaded_image/default_image.PNG">
+                    {% endif %}
                     <span class="card-title">{{ photo.title }} - {{ photo.id }}</span>
                 </div>
                 <div class="card-content">
