@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as login_views
 
-from photo import views
+from photo import views as photo_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
@@ -36,16 +36,12 @@ urlpatterns = [
         login_views.logout,
         name='logout'
     ),
-    url(r'^photos/$', views.photo_list, name='photos'),
-    url(r'^photos/(?P<photo_id>[\d]+)/$', views.photo_detail, name='photo_detail'),
+    url(r'^photos/$', photo_views.photo_list, name='photos'),
+    url(r'^photos/(?P<photo_id>\d+)$', photo_views.photo_detail, name='photo_detail'),
 
-    # template 디버깅용임 건들지마셈
-    #url(r'^debug/login', views.debug_login, name='login'),
-    url(r'^debug/main', views.debug_main, name='main'),
-    url(r'^debug/signup', views.debug_signup, name='signup'),
-    url(r'^debug/insert', views.debug_insert, name='insert'),
-    url(r'^debug/update-page', views.debug_update_page, name='update-page'),
-    url(r'^debug/update', views.debug_update, name='update'),
+
+    url(r'^debug/signup', photo_views.debug_signup, name='signup'),
+
 ]
 
 if settings.DEBUG:

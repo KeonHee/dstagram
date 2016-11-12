@@ -92,13 +92,15 @@
                     {% else %}
                         <img src="/uploads/uploaded_image/default_image.PNG">
                     {% endif %}
-                    <span class="card-title">{{ photo.title }} - {{ photo.id }}</span>
+                    <span class="card-title">{{ photo.title }} - {{ photo.pk }}</span>
                 </div>
                 <div class="card-content">
                     <p>{{ photo.contents }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="{{ photo.id }}" class="btn waves-effect waves-light pink darken-1"><b>수정하기</b><i class="material-icons right">send</i></a>
+                    <a href="{% url 'photo_detail' photo_id=photo.id %}" class="btn waves-effect waves-light pink darken-1">
+                        <b>수정하기</b><i class="material-icons right">send</i>
+                    </a>
                 </div>
             </div>
         </div>

@@ -17,13 +17,13 @@
         <div class="col s12 m4 offset-m4">
             <div class="card">
                 <div class="card-content">
-                    <form method="post" action="{% url 'photos/{{ photo.id }}' %}"  enctype="multipart/form-data">
+                    <form method="post" action="{% url 'photo_detail' photo_id=photo.id %}"  enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="file-field input-field col s12">
                                 <div class="btn pink darken-1">
                                     <span>Image</span>
-                                    <input type="file" id="uploadImage" name="file">
+                                    <input type="file" id="uploadImage" name="file" value="{{ photo.image_file.url }}">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -44,7 +44,6 @@
                                 <button class="btn waves-effect waves-light pink darken-1" type="submit" >
                                     <b>수정완료</b><i class="material-icons right">send</i>
                                 </button>
-                                <input type="hidden" name="next" value="{{ next }}" />
                             </div>
                         </div>
                     </form>
@@ -52,5 +51,24 @@
             </div>
         </div>
     </div>
+    <script>
+    $( document ).ready(function() {
+        $('#submit_image').click(function () {
+            $.ajax({
+            type: 'PUT',
+            url: '{% url 'photo_detail' photo_id=photo.id %}',
+            data: {
+                id: {{ photo.id }},
+                title: $('#title').value,
+                contents: $('#content').value
+            },
+            success: function() {
+                alert('Object deleted!')
+            }
+        })
+
+    });
+});
+    </script>
 
 {% endblock %}
