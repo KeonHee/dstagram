@@ -22,7 +22,7 @@ def photo_list(request):
         try:
             photos = Photo.objects.all()
         except Photo.DoesNotExist:
-            raise Http404('Photo does not exist')
+            return Http404('Photo does not exist')
         return render(
             request,
             'main.html',
@@ -40,9 +40,50 @@ def photo_list(request):
         Photo.objects.create(user=request.user, title=title, contents=contents, image_file=image_file)
         return HttpResponseRedirect('/main')
 
+
 # 업데이트, 삭제 구현
 def photo_detail(request, photo_id):
-    pass
+
+    photo = Photo.objects.get(id=photo_id)
+
+    if photo.DoesNotExist:
+        return Http404('Photo does not exist') # get_object_or_404 함수도 있다.
+
+    else:
+        # /photos -> /update 로 이동
+        if request.method == 'GET':
+            return render(
+                request,
+                'update.html',
+                {
+                    'photo': photo,
+                }
+            )
+
+        # /update 에서
+        else:
+
+            if request.method == 'PUT' or request.method == 'PATCH':
+                # logging.warning('photo : ', photo)
+                logging.warning('request : ', request)
+
+                updated_fields = []
+                if request.PUT['title']:
+                    photo.title = request.PUT['title']
+                    updated_fields.append('title')
+                if request.PUT.get('contents'):
+                    photo.contents = request.PUT.get('contents')
+                    updated_fields.append('contents')
+                if 'file' in request.FILES:
+                    photo.image_file = request.FILES['file']
+                    updated_fields.append('image_file')
+
+                photo.save(updated_fields)
+
+            if request.method == 'DELETE':
+                Photo.delete(id=photo_id)
+
+            return HttpResponseRedirect('/photos')
 
 # template 디버깅용임 건들지마셈
 photos = [{'id': 0, 'title': 'title0입니다', 'contents': 'contents0입니다'},
