@@ -23,7 +23,7 @@
                             <div class="file-field input-field col s12">
                                 <div class="btn pink darken-1">
                                     <span>Image</span>
-                                    <input type="file" id="uploadImage">
+                                    <input type="file" id="uploadImage" name="file">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -37,7 +37,7 @@
                             </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">mode_edit</i>
-                                <textarea id="contents" class="materialize-textarea" length="120">{{ photo.contents }}</textarea>
+                                <textarea id="contents" name="contents" class="materialize-textarea" length="120">{{ photo.contents }}</textarea>
                                 <label for="contents">Contents</label>
                             </div>
                             <div class="input-field col s12 center-align">
