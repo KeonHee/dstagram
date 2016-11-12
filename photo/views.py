@@ -1,4 +1,6 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.shortcuts import (
     render,
@@ -67,4 +69,19 @@ def photo_detail(request, photo_id):
 
 
 def debug_signup(request):
-    pass
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        if username and password and email:
+            try:
+                user = User.objects.get(username=username)
+            except ObjectDoesNotExist:
+                user = User.objects.create_user(username, email, password)
+            else:
+                pass
+                # 예외 2 : username 이 중복되는 기존 사용자가 있음
+        else:
+            pass
+            # 예외 1 : request 로 username, password, email 중 하나도 안넘어옴
+        return HttpResponseRedirect('/accounts/login')
