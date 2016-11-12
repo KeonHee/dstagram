@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^photos/(?P<photo_id>\d+)$', photo_views.photo_detail, name='photo_detail'),
 
 
-    url(r'^signup', photo_views.debug_signup, name='signup'),
+    url(r'^signup', photo_views.signup, name='signup'),
 
 ]
 

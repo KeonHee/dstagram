@@ -68,7 +68,7 @@ def photo_detail(request, photo_id):
         return HttpResponseRedirect('/photos')
 
 
-def debug_signup(request):
+def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
