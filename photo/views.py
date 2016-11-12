@@ -1,20 +1,13 @@
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
-
-import logging
-
-from .models import Photo
-
-
 from django.shortcuts import (
     render,
     get_object_or_404,
     redirect,
 )
-from datetime import datetime
 from django.contrib.auth.decorators import login_required
-
-date=datetime.today().strftime("%Y/%m/%d %H:%M")
+from .models import Photo
+import logging
 
 
 def photo_list(request):
@@ -43,8 +36,9 @@ def photo_list(request):
 
 # 업데이트, 삭제 구현
 def photo_detail(request, photo_id):
-
-    photo = Photo.objects.get(id=photo_id)
+    logging.warning("reuqest : ", request)
+    logging.warning("photo_id : ", photo_id)
+    photo = Photo.objects.get(pk=photo_id)
 
     if photo.DoesNotExist:
         return Http404('Photo does not exist') # get_object_or_404 함수도 있다.

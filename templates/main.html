@@ -98,14 +98,7 @@
                     <p>{{ photo.contents }}</p>
                 </div>
                 <div class="card-action">
-                    <form method="post" action="{% url 'photo_detail' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="id" value="{{ photo.id }}" />
-                        <button class="btn waves-effect waves-light pink darken-1" type="submit" >
-                            <b>수정하기</b><i class="material-icons right">send</i>
-                        </button>
-                        <input type="hidden" name="next" value="{{ next }}"/>
-                    </form>
+                    <a href="{{ photo.id }}" class="btn waves-effect waves-light pink darken-1"><b>수정하기</b><i class="material-icons right">send</i></a>
                 </div>
             </div>
         </div>

@@ -36,8 +36,8 @@ urlpatterns = [
         login_views.logout,
         name='logout'
     ),
-    url(r'^photos/', views.photo_list, name='photos'),
-    url(r'^photos/(?P<photo_id>\d+)/$', views.photo_detail, name='photo_detail'),
+    url(r'^photos/$', views.photo_list, name='photos'),
+    url(r'^photos/(?P<photo_id>[\d]+)/$', views.photo_detail, name='photo_detail'),
 
     # template 디버깅용임 건들지마셈
     #url(r'^debug/login', views.debug_login, name='login'),
