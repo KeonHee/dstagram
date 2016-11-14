@@ -21,8 +21,15 @@ from django.contrib.auth import views as login_views
 
 from photo import views as photo_views
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
 
+    url(
+        r'^$',
+        login_views.login,
+        name='login',
+        kwargs={
+            'template_name': 'login.html',
+        }
+    ),
     url(
         r'^accounts/login/',
         login_views.login,
@@ -34,13 +41,14 @@ urlpatterns = [
     url(
         r'^accounts/logout/',
         login_views.logout,
-        name='logout'
+        name='logout',
     ),
     url(r'^photos/$', photo_views.photo_list, name='photos'),
     url(r'^photos/(?P<photo_id>\d+)$', photo_views.photo_detail, name='photo_detail'),
 
 
     url(r'^signup', photo_views.signup, name='signup'),
+    url(r'^admin/', admin.site.urls),
 
 ]
 

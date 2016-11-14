@@ -1,6 +1,7 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.urls import reverse
 from django.shortcuts import (
     render,
@@ -51,21 +52,21 @@ def photo_detail(request, photo_id):
             }
         )
     else:
-        if request.method == 'PUT' or request.method == 'PATCH':
-            updated_fields = []
-            if request.PUT['title']:
-                photo.title = request.PUT['title']
-                updated_fields.append('title')
-            if request.PUT.get('contents'):
-                photo.contents = request.PUT.get('contents')
-                updated_fields.append('contents')
-            if 'file' in request.FILES:
-                photo.image_file = request.FILES['file']
-                updated_fields.append('image_file')
-            photo.save(updated_fields)
-        if request.method == 'DELETE':
-            Photo.delete(id=photo_id)
-        return HttpResponseRedirect('/photos')
+        if request.method == 'POST':
+            try:
+                if request.POST['method_type'] == 'PUT':
+                    if request.POST['title']:
+                        photo.title = request.POST['title']
+                    if request.POST['contents']:
+                        photo.contents = request.POST['contents']
+                    if 'file' in request.FILES:
+                        photo.image_file = request.FILES['file']
+                    photo.save()
+                if request.POST['method_type'] == 'DELETE':
+                    photo.delete()
+                return HttpResponseRedirect('/photos')
+            except ObjectDoesNotExist:
+                return HttpResponseRedirect('/photos')
 
 
 def signup(request):
@@ -85,3 +86,4 @@ def signup(request):
             pass
             # 예외 1 : request 로 username, password, email 중 하나도 안넘어옴
         return HttpResponseRedirect('/accounts/login')
+

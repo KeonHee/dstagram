@@ -126,5 +126,5 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_files')
 
-
+LOGOUT_REDIRECT_URL='/accounts/login'
 LOGIN_REDIRECT_URL ='/photos/'

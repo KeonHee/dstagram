@@ -12,6 +12,13 @@
 {% endif %}
 
     <link type="text/css" rel="stylesheet" href="{% static 'css/input.css' %}" />
+    <style>
+    img{
+        max-height: 500%;
+        max-width: 100%;
+        padding: 0.01rem;
+    }
+    </style>
     <div class="col s12 m4 offset-m4"><h1></h1></div>
     <div class="row">
         <div class="col s12 m4 offset-m4">
@@ -23,13 +30,15 @@
                             <div class="file-field input-field col s12">
                                 <div class="btn pink darken-1">
                                     <span>Image</span>
-                                    <input type="file" id="uploadImage" name="file" value="{{ photo.image_file.url }}">
+                                    <input type="file" id="uploadImage" name="file">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
                                 </div>
                             </div>
-                            <div class="col s8 offset-s2" id="holder"></div>
+                            <div class="col s8 offset-s2" id="holder">
+                                <img id="preview" src="{{ photo.image_file.url }}" alt="preview" />
+                            </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">assignment</i>
                                 <input type="text" id="title" name="title" class="validate" value="{{ photo.title }}">
@@ -44,6 +53,7 @@
                                 <button class="btn waves-effect waves-light pink darken-1" type="submit" >
                                     <b>수정완료</b><i class="material-icons right">send</i>
                                 </button>
+                                <input type="hidden" name="method_type" value="PUT">
                             </div>
                         </div>
                     </form>
@@ -51,24 +61,27 @@
             </div>
         </div>
     </div>
-    <script>
-    $( document ).ready(function() {
-        $('#submit_image').click(function () {
-            $.ajax({
-            type: 'PUT',
-            url: '{% url 'photo_detail' photo_id=photo.id %}',
-            data: {
-                id: {{ photo.id }},
-                title: $('#title').value,
-                contents: $('#content').value
-            },
-            success: function() {
-                alert('Object deleted!')
-            }
-        })
+<script>
+// 이미지 업로드시 화면에 바로 띄워줌
+var upload = document.getElementById('uploadImage'),
+	holder = document.getElementById("holder");
+     upload.onchange= function (e) {
+	  e.preventDefault();
+	  var file = upload.files[0],
+	      reader = new FileReader();
+	    reader.onload = function (event) {
+	    var img = new Image();
+	    img.src = event.target.result;
+	    if (img.width > 300) { // holder max width
+	      img.width = 300;
+	    }
+	    holder.innerHTML = '';
+	    holder.appendChild(img);
+	  };
+	  reader.readAsDataURL(file);
 
-    });
-});
-    </script>
+	  return false;
+	};
+</script>
 
 {% endblock %}
