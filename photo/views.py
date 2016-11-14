@@ -60,6 +60,7 @@ def photo_detail(request, photo_id):
                     if request.POST['contents']:
                         photo.contents = request.POST['contents']
                     if 'file' in request.FILES:
+                        photo.image_file.delete()
                         photo.image_file = request.FILES['file']
                     photo.save()
                 if request.POST['method_type'] == 'DELETE':
