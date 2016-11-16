@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Photo
 import logging
 
+
 def photo_list(request):
     if request.method == 'GET':
         try:
@@ -59,7 +60,7 @@ def photo_detail(request, photo_id):
                     if request.POST['contents']:
                         photo.contents = request.POST['contents']
                     if 'file' in request.FILES:
-                        if not (photo.image_file.url == '/uploads/uploaded_image/default_image.PNG'):
+                        if not (photo.image_file.url == '/uploads/uploaded_image/default_image.PNG'): # default image 삭제 방지
                             photo.image_file.delete()
                         photo.image_file = request.FILES['file']
                     photo.save()

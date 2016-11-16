@@ -21,7 +21,7 @@ class Photo(models.Model):
         ordering = ('-pk', '-created_at')
 
     def delete(self, *args, **kwargs):
-        if not (self.image_file.url == '/uploads/uploaded_image/default_image.PNG'):
+        if not (self.image_file.url == '/uploads/uploaded_image/default_image.PNG'): # default image 삭제 방지
             self.image_file.delete()
         super(Photo, self).delete(*args, **kwargs)
 
