@@ -100,11 +100,7 @@
                     </div>
                 </div>
                 <div class="card-image">
-                    {% if photo.image_file.url%}
-                        <img src="{{ photo.image_file.url }}">
-                    {% else %}
-                        <img src="/uploads/uploaded_image/default_image.PNG">
-                    {% endif %}
+                    <img src="{{ photo.image_file.url }}">
                     <span class="card-title grey-text text-darken-3">{{ photo.title }}</span>
                 </div>
                 <div class="card-content">
@@ -153,5 +149,4 @@ var upload = document.getElementById('uploadImage'),
 	  return false;
 	};
 </script>
-
 {% endblock %}

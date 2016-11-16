@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Photo
 import logging
 
-
 def photo_list(request):
     if request.method == 'GET':
         try:
@@ -31,9 +30,9 @@ def photo_list(request):
         contents = request.POST.get('contents')
         if 'file' in request.FILES:
             image_file = request.FILES['file']
+            Photo.objects.create(user=request.user, title=title, contents=contents, image_file=image_file)
         else:
-            image_file = False
-        Photo.objects.create(user=request.user, title=title, contents=contents, image_file=image_file)
+            Photo.objects.create(user=request.user, title=title, contents=contents)
         return HttpResponseRedirect('/photos')
 
 
@@ -60,7 +59,8 @@ def photo_detail(request, photo_id):
                     if request.POST['contents']:
                         photo.contents = request.POST['contents']
                     if 'file' in request.FILES:
-                        photo.image_file.delete()
+                        if not (photo.image_file.url == '/uploads/uploaded_image/default_image.PNG'):
+                            photo.image_file.delete()
                         photo.image_file = request.FILES['file']
                     photo.save()
                 if request.POST['method_type'] == 'DELETE':
