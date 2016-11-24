@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as login_views
 
 from photo import views as photo_views
+
+
 urlpatterns = [
 
     url(
