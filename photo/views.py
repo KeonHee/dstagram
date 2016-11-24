@@ -7,6 +7,8 @@ from django.shortcuts import (
     redirect,
 )
 from .models import Photo
+from .forms import PhotoForm
+
 
 def photo_list(request):
     if request.method == 'GET':
@@ -22,13 +24,11 @@ def photo_list(request):
              }
         )
     if request.method == 'POST':
-        title = request.POST['title']
-        contents = request.POST.get('contents')
-        if 'file' in request.FILES:
-            image_file = request.FILES['file']
-            Photo.objects.create(user=request.user, title=title, contents=contents, image_file=image_file)
-        else:
-            Photo.objects.create(user=request.user, title=title, contents=contents)
+        photo_form = PhotoForm(request.POST, request.FILES)
+        if photo_form.is_valid():
+            new_photo = photo_form.save(commit=False)
+            new_photo.user = request.user
+            new_photo.save()
         return HttpResponseRedirect('/photos')
 
 
@@ -50,15 +50,11 @@ def photo_detail(request, photo_id):
         if request.method == 'POST':
             try:
                 if request.POST['method_type'] == 'PUT':
-                    if request.POST['title']:
-                        photo.title = request.POST['title']
-                    if request.POST['contents']:
-                        photo.contents = request.POST['contents']
-                    if 'file' in request.FILES:
-                        if not (photo.image_file.url == '/uploads/uploaded_image/default_image.PNG'): # default image 삭제 방지
-                            photo.image_file.delete()
-                        photo.image_file = request.FILES['file']
-                    photo.save()
+                    photo_form = PhotoForm(request.POST, request.FILES, instance=photo)
+                    if photo_form.is_valid():
+                        update_photo = photo_form.save(commit=False)
+                        update_photo.user = request.user
+                        update_photo.save()
                 if request.POST['method_type'] == 'DELETE':
                     photo.delete()
                 return HttpResponseRedirect('/photos')
