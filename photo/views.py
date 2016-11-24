@@ -1,6 +1,7 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
     render,
     get_object_or_404,
@@ -10,6 +11,8 @@ from .models import Photo
 from .forms import PhotoForm
 
 
+
+@login_required(login_url='login')
 def photo_list(request):
     if request.method == 'GET':
         try:
@@ -32,6 +35,7 @@ def photo_list(request):
         return HttpResponseRedirect('/photos')
 
 
+@login_required(login_url='login')
 def photo_detail(request, photo_id):
     try:
         photo = Photo.objects.get(pk=photo_id)
