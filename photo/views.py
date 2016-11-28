@@ -11,7 +11,6 @@ from .models import Photo
 from .forms import PhotoForm
 
 
-
 @login_required(login_url='login')
 def photo_list(request):
     if request.method == 'GET':
