@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+{% load staticfiles%}
+{% block content %}
+
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>권한이 없는 페이지에 접근하였으니, 권한이 있는 계정으로 로그인하세요.</p>
+    {% else %}
+    <p>이 페이지를 보려면 로그인을 해야 합니다.</p>
+    {% endif %}
+{% endif %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/input.css' %}" />
+    <style>
+    .card-image img{
+        max-height: 500%;
+        max-width: 100%;
+        padding: 0.01rem;
+    }
+    #card-name{
+        margin-bottom: 0px;
+    }
+    </style>
+    <div class="col s12 m4 offset-m4"><h1></h1></div>
+
+
+    <div class="row">
+        <div class="col s12 m8 l4 offset-m2 offset-l4">
+             <ul class="collapsible popout" data-collapsible="accordion">
+                 <li>
+                     <div class="collapsible-header"><i class="material-icons">person_pin</i>내 프로필</div>
+                     <div class="collapsible-body white">
+                         <div class="row container">
+                                <div class="col s12">
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                     <form method="post" action="{% url 'logout' %}">
+                                         {% csrf_token %}
+                                         <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                                             <b>로그아웃</b><i class="material-icons right">power_settings_new</i>
+                                         </button>
+                                         <input type="hidden" name="next" value="{{ next }}" />
+                                     </form>
+                                </div>
+                         </div>
+                     </div>
+                 </li>
+                 <li>
+                    <div class="collapsible-header"><i class="material-icons">note_add</i>사진 올리기</div>
+                    <div class="collapsible-body white">
+                        <form method="post" action="{% url 'photos' %}"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="file-field input-field col s12">
+                                    <div class="btn pink darken-1">
+                                        <span>Image</span>
+                                        <input type="file" id="uploadImage" name="image_file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="col s8 offset-s2" id="holder"></div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">assignment</i>
+                                    <input type="text" id="title" name="title" class="validate">
+                                    <label for="title">Title</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">mode_edit</i>
+                                    <textarea id="contents" name="contents" class="materialize-textarea" length="120"></textarea>
+                                    <label for="contents">Contents</label>
+                                </div>
+                                <div class="input-field col s12 center-align">
+                                    <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                                        <b>업로드</b><i class="material-icons right">send</i>
+                                    </button>
+                                    <input type="hidden" name="next" value="{{ next }}" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                 </li>
+            </ul>
+        </div>
+    </div>
+
+    {# 사진 리스트 #}
+    {% for photo in photos %}
+    <div class="row">
+        <div class="col s12 m8 l4 offset-m2 offset-l4">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row" id="card-name">
+                        <div class="col s12 m6 l8">
+                            <p><span class="grey-text text-darken-3">{{ photo.user.username }}</span></p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p class="grey-text text-lighten-1">{{ photo.created_at }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-image">
+                    <img src="{{ photo.image_file.url }}">
+                    <span class="card-title grey-text text-darken-3">{{ photo.title }}</span>
+                </div>
+                <div class="card-content">
+                    <p><span class="grey-text text-darken-3">{{ photo.contents }}</span></p>
+                </div>
+                <div class="card-action row">
+                    <div class="col s12 m12 l8">
+                        <a href="{% url 'photo_detail' photo_id=photo.id %}" class="btn waves-effect waves-light pink darken-1">
+                            <b>수정하기</b><i class="material-icons right">send</i>
+                        </a>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <form method="post" action="{% url 'photo_detail' photo_id=photo.id%}">
+                            {% csrf_token %}
+                            <button class="btn waves-effect waves-light pink darken-1" type="submit" >
+                                <b>삭제</b><i class="material-icons right">delete</i>
+                                <input type="hidden" name="method_type" value="DELETE">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+
+<script>
+// 이미지 업로드시 화면에 바로 띄워줌
+var upload = document.getElementById('uploadImage'),
+	holder = document.getElementById("holder");
+    upload.onchange = function (e) {
+	  e.preventDefault();
+	  var file = upload.files[0],
+	      reader = new FileReader();
+	    reader.onload = function (event) {
+	    var img = new Image();
+	    img.src = event.target.result;
+	    if (img.width > 300) { // holder max width
+	      img.width = 300;
+	    }
+	    holder.innerHTML = '';
+	    holder.appendChild(img);
+	  };
+	  reader.readAsDataURL(file);
+
+	  return false;
+	};
+</script>
+{% endblock %}
